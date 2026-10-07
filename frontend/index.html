@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f7f9fc" />
+    <link rel="icon" type="image/svg+xml" href="/frontend/assets/favicon.svg" />
+    <title>Japan Master Researcher · 工作台</title>
+    <link rel="stylesheet" href="/frontend/assets/styles.css?v=papers-20260927-3" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand"><div class="brand-mark">J<span>·</span></div><div><strong>Japan Master<br />Researcher</strong><small>智能研究工作台</small></div></div>
+        <button id="new-case" class="new-case" type="button"><span>＋</span> 开始新的研究</button>
+        <div class="nav-label">工作空间</div>
+        <button class="nav-item active" id="nav-cases" type="button"><span class="nav-icon">▤</span> 我的研究 <span class="nav-count" id="case-count">0</span></button>
+        <button class="nav-item" id="nav-memory" type="button"><span class="nav-icon">◈</span> 长期记忆</button>
+        <div class="nav-label recent-label">最近的研究</div>
+        <div id="case-list" class="case-list"><p class="muted small">连接后显示 Case</p></div>
+        <div class="sidebar-bottom">
+          <div class="connection"><span id="connection-dot" class="connection-dot"></span><span id="connection-label">尚未连接</span></div>
+          <button id="user-switch" class="profile" type="button"><span class="avatar user">R</span><span class="profile-text"><strong id="active-user">root</strong><small>切换用户 / 凭据</small></span><span class="chevron">⌄</span></button>
+        </div>
+      </aside>
+
+      <main class="main-pane">
+        <header class="topbar"><button id="mobile-menu" class="icon-button mobile-only" type="button" aria-label="打开菜单">☰</button><div class="topbar-title"><span class="eyebrow">JMR / WORKSPACE</span><h1 id="page-title">新的研究</h1></div><div class="top-actions"><span id="status-badge" class="status-badge">准备就绪</span><button id="open-detail" class="detail-trigger" type="button" title="查看研究资料"><span>▤</span><span class="detail-trigger-label">研究资料</span></button><button id="refresh" class="icon-button" type="button" title="刷新">↻</button></div></header>
+        <section id="chat-page" class="page chat-page">
+          <div id="chat-scroll" class="chat-scroll">
+            <div id="welcome" class="welcome"><div class="welcome-spark">✳ <span>RESEARCH, REIMAGINED</span></div><h2>从好问题，走向好研究。</h2><p>告诉我你感兴趣的教授、研究室或研究方向。我会梳理公开资料、核对论文与 KAKEN 项目，陪你把想法推进到套磁信。</p><div class="welcome-section-label">试着从这里开始</div><div class="prompt-grid"><button type="button" class="prompt-card" data-prompt="请调查东京大学的一位目标教授，并分析其研究室近期论文和适合我的研究方向。"><span class="prompt-icon">⌕</span><strong>调查目标研究室</strong><small>梳理论文、项目与研究脉络 <span>↗</span></small></button><button type="button" class="prompt-card" data-prompt="请根据目标教授的研究方向，为我生成有证据支持的研究 Idea。"><span class="prompt-icon">✦</span><strong>探索研究 Idea</strong><small>从可靠证据出发生成选题 <span>↗</span></small></button></div></div>
+            <div id="message-list" class="message-list" aria-live="polite"></div>
+            <div id="interrupt-panel" class="interrupt-panel hidden"></div>
+          </div>
+          <div class="composer-wrap"><div id="error-banner" class="error-banner hidden" role="alert"></div><form id="chat-form" class="composer"><textarea id="chat-input" rows="2" maxlength="12000" placeholder="描述你想研究的教授、研究室或问题…" aria-label="对话输入"></textarea><div class="composer-bottom"><span id="composer-hint">Enter 发送 · Shift+Enter 换行</span><button id="send-button" class="send-button" type="submit" aria-label="发送消息">↑</button></div></form><p class="composer-note">研究结果来自外部资料与模型生成，请核对引用和事实。</p></div>
+        </section>
+        <section id="memory-page" class="page memory-page hidden"><div class="section-heading"><div><span class="eyebrow">PERSONAL KNOWLEDGE</span><h2>长期记忆</h2><p>只对当前用户可见，可用于后续 Case。</p></div><label class="upload-button">↑ 上传文件<input id="file-input" type="file" accept=".pdf,.txt,.md,.csv,.json" hidden /></label></div><div class="memory-toolbar"><input id="memory-search" type="search" placeholder="搜索记忆…" /><button id="add-memory" class="secondary-button" type="button">＋ 手动添加</button></div><div id="memory-list" class="memory-grid"></div></section>
+      </main>
+
+      <aside id="detail-pane" class="detail-pane"><div class="detail-header"><div><span class="eyebrow">CASE LIBRARY</span><h2>研究资料</h2></div><button id="close-detail" class="icon-button mobile-only" type="button">×</button></div><p id="detail-intro" class="detail-intro">选择一个 Case 后，可在这里查看论文、KAKEN、Idea 和套磁信版本。</p><div id="detail-tabs" class="detail-tabs"><button class="active" data-tab="overview">概览</button><button data-tab="papers">论文</button><button data-tab="kaken">KAKEN</button><button data-tab="ideas">Idea</button><button data-tab="selected">已选</button><button data-tab="drafts">草稿</button><button data-tab="reviews">修改意见</button></div><div id="detail-content" class="detail-content"></div></aside>
+    </div>
+
+    <div id="detail-backdrop" class="detail-backdrop" aria-hidden="true"></div>
+    <dialog id="login-dialog" class="modal"><form id="login-form" method="dialog"><div class="modal-mark">J·</div><span class="eyebrow">WELCOME BACK</span><h2>连接你的工作台</h2><p>默认用户是 root。输入服务端为该用户配置的访问 Token；切换用户时也需要对应 Token。</p><label>用户 ID<input id="login-user" value="root" autocomplete="username" required /></label><label>访问 Token<input id="login-token" type="password" autocomplete="current-password" placeholder="粘贴 JMR_API_TOKENS_JSON 中的 Token" required /></label><div id="login-error" class="form-error hidden"></div><button class="primary-button" type="submit">连接工作台 →</button><button id="login-cancel" class="text-button" type="button">取消</button></form></dialog>
+    <dialog id="memory-dialog" class="modal"><form id="memory-form" method="dialog"><span class="eyebrow">PERSONAL KNOWLEDGE</span><h2>添加记忆</h2><p>例如你的研究经历、技能、申请偏好或邮件写作习惯。</p><label>记忆类型<input id="memory-kind" value="applicant_profile" required /></label><label>内容<textarea id="memory-content" rows="6" placeholder="写下希望 Agent 长期记住的内容…" required></textarea></label><div id="memory-error" class="form-error hidden"></div><div class="modal-actions"><button id="memory-cancel" class="secondary-button" type="button">取消</button><button class="primary-button" type="submit">保存记忆</button></div></form></dialog>
+    <dialog id="delete-memory-dialog" class="modal" aria-labelledby="delete-memory-title"><form id="delete-memory-form" method="dialog"><span class="eyebrow">DELETE MEMORY</span><h2 id="delete-memory-title">删除这条长期记忆？</h2><p>即将删除 <strong id="delete-memory-name"></strong>。删除后它不会再出现在活动记忆列表，也不会供后续 Agent 选择。这是逻辑删除：已有 Case 资料、审计记录及上传原文件不会被物理清除。</p><div id="delete-memory-error" class="form-error hidden" role="alert"></div><div class="modal-actions"><button id="delete-memory-cancel" class="secondary-button" type="button">取消</button><button id="delete-memory-confirm" class="danger-button" type="submit">确认删除</button></div></form></dialog>
+    <dialog id="delete-case-dialog" class="modal" aria-labelledby="delete-case-title"><form id="delete-case-form" method="dialog"><span class="eyebrow">DELETE RESEARCH</span><h2 id="delete-case-title">永久删除这项研究？</h2><p>即将删除 <strong id="delete-case-name"></strong>（<span id="delete-case-id"></span>）。该 Case 的对话、研究资料、Idea、草稿、运行记录和关联文件（预览：<strong id="delete-case-file-count">0</strong> 个）将被删除，无法恢复。长期记忆不会删除；审计记录按保留策略保存。</p><div id="delete-case-error" class="form-error hidden" role="alert"></div><div class="modal-actions"><button id="delete-case-cancel" class="secondary-button" type="button">取消</button><button id="delete-case-confirm" class="danger-button" type="submit">永久删除</button></div></form></dialog>
+    <div id="toast" class="toast hidden" role="status"></div>
+    <script type="module" src="/frontend/assets/app.js?v=papers-20260927-5"></script>
+  </body>
+</html>
